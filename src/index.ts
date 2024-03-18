@@ -49,15 +49,22 @@ export const run = async () => {
             type: "number",
             description: "number of results to return",
             demandOption: true,
+          })
+          .option("verbose", {
+            alias: "V",
+            type: "boolean",
+            description: "Wheter or not to print the query results",
+            default: false,
+            demandOption: false,
           }),
       handler: async (argv) => {
-        const { query, topK } = argv;
-        if (!query) {
-          console.error("Please provide a query");
+        const { query, topK, verbose } = argv;
+        if (!query || !topK) {
+          console.error("Please provide a query and the topK argument");
           process.exit(1);
         }
 
-        await queryCommand(query, topK);
+        await queryCommand(query, topK, verbose);
       },
     })
     // Configure delete command

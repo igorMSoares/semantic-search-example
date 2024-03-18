@@ -3,11 +3,12 @@ import { embedder } from "./embeddings.js";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { getEnv, validateEnvironmentVariables } from "./utils/util.js";
 import type { TextMetadata } from "./types.js";
+import fs from "fs/promises";
 
 config();
 validateEnvironmentVariables();
 
-export const query = async (query: string, topK: number) => {
+export const query = async (query: string, topK: number, verbose = false) => {
   validateEnvironmentVariables();
   const pinecone = new Pinecone();
 
@@ -28,11 +29,20 @@ export const query = async (query: string, topK: number) => {
     includeValues: false,
   });
 
-  // Print the results
-  console.log(
-    results.matches?.map((match) => ({
-      text: match.metadata?.text,
-      score: match.score,
-    }))
-  );
+  const response = results.matches?.map((match) => ({
+    text: match.metadata?.text,
+    score: match.score,
+  }));
+
+  if (verbose) {
+    // Print the results
+    console.log(response);
+  }
+
+  const outputFilename = "./out.json";
+  await fs
+    .writeFile(outputFilename, JSON.stringify(response))
+    .catch((err) => console.error(err));
+
+  console.log("Results have been written to", outputFilename);
 };
