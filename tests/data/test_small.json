@@ -1,0 +1,18 @@
+[
+    {
+        "title": "Entendendo o HTTP e a Importância da Troca de Mensagens",
+        "content": [
+            "Introdução ao HTTP",
+            "Relevância da troca de mensagens em formato texto",
+            "Ferramentas como Curl e Wget para navegação de linha de comando"
+        ]
+    },
+    {
+        "title": "Importância do Conhecimento Básico de HTTP",
+        "content": [
+            "Necessidade de entender como enviar e receber mensagens HTTP",
+            "Essencial para compreensão da web e desenvolvimento web",
+            "Implicações para entender APIs e problemas de segurança"
+        ]
+    }
+]

@@ -1,14 +1,9 @@
 import cliProgress from "cli-progress";
 import { config } from "dotenv";
-import loadCSVFile from "./csvLoader.js";
-
+import loadJsonFile from "./jsonLoader.js";
 import { embedder } from "./embeddings.js";
-import {
-  Pinecone,
-  type ServerlessSpecCloudEnum,
-} from "@pinecone-database/pinecone";
+import { Pinecone } from "@pinecone-database/pinecone";
 import { getEnv, validateEnvironmentVariables } from "./utils/util.js";
-
 import type { TextMetadata } from "./types.js";
 
 // Load environment variables from .env
@@ -21,43 +16,20 @@ const progressBar = new cliProgress.SingleBar(
 
 let counter = 0;
 
-export const load = async (csvPath: string, column: string) => {
+export const load = async (filePath: string) => {
   validateEnvironmentVariables();
+
+  // Read the JSON file
+  const data = await loadJsonFile(filePath);
+
+  // Stringify each chunk object
+  const documents = data.map((chunkObj) => JSON.stringify(chunkObj));
 
   // Get a Pinecone instance
   const pinecone = new Pinecone();
 
-  // Create a readable stream from the CSV file
-  const { data, meta } = await loadCSVFile(csvPath);
-
-  // Ensure the selected column exists in the CSV file
-  if (!meta.fields?.includes(column)) {
-    console.error(`Column ${column} not found in CSV file`);
-    process.exit(1);
-  }
-
-  // Extract the selected column from the CSV file
-  const documents = data.map((row) => row[column] as string);
-
-  // Get index name, cloud, and region
+  // Get index name
   const indexName = getEnv("PINECONE_INDEX");
-  const indexCloud = getEnv("PINECONE_CLOUD") as ServerlessSpecCloudEnum;
-  const indexRegion = getEnv("PINECONE_REGION");
-
-  // Create a Pinecone index with a dimension of 384 to hold the outputs
-  // of our embeddings model. Use suppressConflicts in case the index already exists.
-  await pinecone.createIndex({
-    name: indexName,
-    dimension: 384,
-    spec: {
-      serverless: {
-        region: indexRegion,
-        cloud: indexCloud,
-      },
-    },
-    waitUntilReady: true,
-    suppressConflicts: true,
-  });
 
   // Select the target Pinecone index. Passing the TextMetadata generic type parameter
   // allows typescript to know what shape to expect when interacting with a record's

@@ -14,28 +14,21 @@ export const run = async () => {
       aliases: ["l"],
       describe: "Load the embeddings in to Pinecone",
       builder: (yargs) =>
-        yargs
-          .option("csvPath", {
-            alias: "p",
-            type: "string",
-            description: "Path to your CSV path",
-            demandOption: true,
-          })
-          .option("column", {
-            alias: "c",
-            type: "string",
-            description: "The name for the CSV column",
-            demandOption: true,
-          }),
+        yargs.option("filePath", {
+          alias: "p",
+          type: "string",
+          description: "Path to your json file",
+          demandOption: true,
+        }),
       handler: async (argv) => {
-        const { csvPath, column } = argv;
+        const { filePath } = argv;
 
-        if (!csvPath) {
-          console.error("Please provide a CSV path");
+        if (!filePath) {
+          console.error("Please provide a file path");
           process.exit(1);
         }
 
-        await load(csvPath, column);
+        await load(filePath);
       },
     })
     // Configure query command
