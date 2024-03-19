@@ -3,7 +3,7 @@ import { hideBin } from "yargs/helpers";
 import { load } from "./load.js";
 import { query as queryCommand } from "./query.js";
 import { deleteIndex } from "./deleteIndex.js";
-import { mdToCSVLike } from "./mdToCSVLike.js";
+import { chunkFile } from "./chunker.js";
 
 export const run = async () => {
   const parser = yargs(hideBin(process.argv))
@@ -75,26 +75,33 @@ export const run = async () => {
         await queryCommand(query, topK, verbose);
       },
     })
+    // Configure chunk command
     .command({
-      command: "convertMd",
+      command: "chunk",
       aliases: ["c"],
-      describe: "Convert markdown file to a CSV-like file",
+      describe: "Performs semantic chunking",
       builder: (yargs) =>
-        yargs.option("mdFile", {
-          alias: "m",
-          type: "string",
-          description: "Path to your markdown file",
-          demandOption: true,
-        }),
+        yargs
+          .option("filePath", {
+            alias: "p",
+            type: "string",
+            description: "Source file path",
+            demandOption: true,
+          })
+          .option("maxTokenSize", {
+            alias: "m",
+            type: "number",
+            description: "Max number of tokens allowed in a single chunk",
+            default: 50,
+          }),
       handler: async (argv) => {
-        const { mdFile } = argv;
-
-        if (!mdFile) {
+        const { filePath, maxTokenSize } = argv;
+        if (!filePath) {
           console.error("Please provide a file path");
           process.exit(1);
         }
 
-        await mdToCSVLike(mdFile);
+        await chunkFile(filePath, maxTokenSize);
       },
     })
     // Configure delete command
