@@ -23,6 +23,7 @@
     "find-up": "^6.3.0",
     "onnxruntime-node": "^1.14.0",
     "papaparse": "^5.4.1",
+    "semantic-chunking": "^1.0.0",
     "uuid": "^9.0.0",
     "yargs": "^17.7.2"
   },
