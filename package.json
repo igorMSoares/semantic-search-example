@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "clean": "rimraf ./build",
-    "build": "npm-run-all format lint && tsc",
+    "build": "npm-run-all format && tsc",
     "start": "node build/src",
     "test": "vitest run --coverage --retry 5",
     "dev": "ts-node src",
