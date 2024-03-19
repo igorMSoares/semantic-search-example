@@ -16,6 +16,8 @@ async function loadCSVFile(
       dynamicTyping: true,
       header: true,
       skipEmptyLines: true,
+      quoteChar: "",
+      delimiter: "|",
     });
   } catch (err) {
     console.error(err);

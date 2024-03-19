@@ -1,3 +1,9 @@
+models/
+
+semantic-chunks*.md
+semantic-chunks*.txt
+out.json
+
 # IntelliJ project files
 .idea
 *.iml
