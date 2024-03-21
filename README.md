@@ -124,12 +124,12 @@ Utilize o argumento `--verbose` para exibir o resultado da query na saída padr�
 // out.json
 [
   {
-    "text": "Title:\"Configuração do PostgreSQL no Docker Compose: Determinação do Número Ideal de Conexões\",Content:\"Pergunta crucial: quantas conexões são necessárias para suportar a carga do teste de Gatling?\",\"450 conexões é suficiente ou menos seria aceitável? Qual é o equilíbrio ideal entre uso de recursos e tempo de espera para novas conexões?\",\"Testes de carga são essenciais para validar e ajustar essas premissas na prática, garantindo uma configuração otimizada e eficiente\",\"Essas considerações mostram a importância de ajustar adequadamente a configuração do PostgreSQL para atender às demandas específicas de carga e recursos de um ambiente Docker Compose, além de destacar a necessidade de testes de carga para validar e otimizar essas configurações na prática.\"",
-    "score": 0.50529635
+    "text": "Pronto, não mostrei configuração dos demais serviços no docker compose mas já deve ter dado pra entender, né?Fica de exercício repetir essa modificação em um dos projetos da rinha.",
+    "score": 0.686207652
   },
   {
-    "text": "Title:\"Configuração do PostgreSQL no Docker Compose: Bulk Insert e Upserts\",Content:\"Estratégias importantes para operações eficientes de inserção em massa de dados\",\"Reduzem o tempo e os recursos necessários para inserir grandes volumes de dados de uma só vez\",\"Cada banco de dados tem suas próprias peculiaridades de sintaxe para essas operações\"",
-    "score": 0.502593935
+    "text": "Docker compose é a descrição de uma mini-infraestrutura.Do que instalar, configurar e subir Redis, Postgres, Nginx, tudo na mão, podemos automatizar tudo num único comando.",
+    "score": 0.66637069
   }
 ]
 ```
