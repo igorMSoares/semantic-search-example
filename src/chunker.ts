@@ -10,18 +10,24 @@ const chunksToCSV = (chunks: string[], colNames: string[]) => {
   );
 };
 
-export const chunkFile = async (filePath: string, maxTokenSize = 50) => {
+export const chunkFile = async (
+  filePath: string,
+  maxTokenSize = 50,
+  verbose = false
+) => {
   const srcFileAbsPath = await fs.realpath(filePath);
   const text = await fs.readFile(srcFileAbsPath, "utf8");
 
   const chunks = (await chunkit(text, {
-    logging: true,
+    logging: verbose,
     maxTokenSize,
   })) as string[];
 
-  console.log(chunks.length);
+  const outputFilepath = "./semantic-chunks.csv";
 
   await fs
-    .writeFile("./semantic-chunks.csv", chunksToCSV(chunks, ["CHUNK"]))
+    .writeFile(outputFilepath, chunksToCSV(chunks, ["CHUNK"]))
     .catch((err) => console.error({ err }));
+
+  console.log(chunks.length, "chunks written to", outputFilepath);
 };

@@ -93,15 +93,22 @@ export const run = async () => {
             type: "number",
             description: "Max number of tokens allowed in a single chunk",
             default: 50,
+          })
+          .option("verbose", {
+            alias: "v",
+            type: "boolean",
+            description:
+              "Wheter or not to print the chunks processing to stdout",
+            default: false,
           }),
       handler: async (argv) => {
-        const { filePath, maxTokenSize } = argv;
+        const { filePath, maxTokenSize, verbose } = argv;
         if (!filePath) {
           console.error("Please provide a file path");
           process.exit(1);
         }
 
-        await chunkFile(filePath, maxTokenSize);
+        await chunkFile(filePath, maxTokenSize, verbose);
       },
     })
     // Configure delete command
