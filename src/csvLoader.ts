@@ -12,7 +12,7 @@ async function loadCSVFile(
     const data = await fs.readFile(csvAbsolutePath, "utf8");
 
     // Parse the CSV file
-    return await Papa.parse(data, {
+    return Papa.parse(data, {
       dynamicTyping: true,
       header: true,
       skipEmptyLines: true,

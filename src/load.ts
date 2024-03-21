@@ -39,23 +39,6 @@ export const load = async (csvPath: string, column: string) => {
   // Get index name, cloud, and region
   const indexName = getEnv("PINECONE_INDEX");
 
-  /*****************************************************************************
-  // Create a Pinecone index with a dimension of 384 to hold the outputs
-  // of our embeddings model. Use suppressConflicts in case the index already exists.
-  await pinecone.createIndex({
-    name: indexName,
-    dimension: 384,
-    spec: {
-      serverless: {
-        region: indexRegion,
-        cloud: indexCloud,
-      },
-    },
-    waitUntilReady: true,
-    suppressConflicts: true,
-  });
-*****************************************************************************/
-
   // Select the target Pinecone index. Passing the TextMetadata generic type parameter
   // allows typescript to know what shape to expect when interacting with a record's
   // metadata field without the need for additional type casting.
