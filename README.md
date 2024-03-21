@@ -10,7 +10,7 @@ Como texto base, foi utilizado o [roteiro do vídeo do Fábio Akita](https://www
 
 ### Segmentação Semântica
 
-Os trechos (`chunks`) do texto original foram criados utilizando o Chat-GPT para fazer um _Semantic Chunking_ de forma a obter uma versão em markdown ([semantic-chunks.md](./semantic-chunks.md)), com o texto original resumido em seções semânticas identificadas por título e tópicos associados a essa seção.
+Os trechos (`chunks`) do texto original foram criados utilizando o Chat-GPT para fazer um _Semantic Chunking_ de forma a obter uma versão em markdown com o texto original resumido em seções semânticas identificadas por título e tópicos associados a essa seção.
 
 Na branch [other-semantic-chunking](https://github.com/igorMSoares/semantic-search-example/tree/feat/other-semantic-chunking) foi utilizada outra forma de gerar os segmentos, mantendo as mesmas frases do trecho original, sem interpretá-las, resumí-las ou alterá-las de nenhuma forma.
 
@@ -58,7 +58,7 @@ npm run build
 
 ## Estruturando os segmentos
 
-A partir do [markdown](./semantic-chunks.md) gerado pelo Chat-GPT, foi gerado um arquivo CSV ([semantic-chunks.csv](./semantic-chunks.csv)) no formato esperado pelo comando que irá criar os embeddings e carregá-los no Pinecone.
+A partir do markdown gerado pelo Chat-GPT, foi gerado um arquivo CSV ([semantic-chunks.csv](./semantic-chunks.csv)) no formato esperado pelo comando que irá criar os embeddings e carregá-los no Pinecone.
 
 Para converter um markdown em um csv no formato esperado, utilize o comando:
 
