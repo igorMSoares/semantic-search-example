@@ -6,7 +6,9 @@ const chunksToCSV = (chunks: string[], colNames: string[]) => {
   return (
     colNames.reduce((row, colName) => `${row}${row ? "," : ""}${colName}`, "") +
     "\n" +
-    chunks.map((chunk) => chunk.trim().replace(/\s\s+/g, "")).join("|\n")
+    chunks
+      .map((chunk) => chunk.trim().replace(/\s\s+/g, "").replace(/"/g, '\\"'))
+      .join("|\n")
   );
 };
 
