@@ -10,9 +10,11 @@ Como texto base, foi utilizado o [roteiro do vídeo do Fábio Akita](https://www
 
 ### Segmentação Semântica
 
-Os trechos (`chunks`) do texto original foram criados utilizando o Chat-GPT para fazer um _Semantic Chunking_ de forma a obter uma versão em markdown com o texto original resumido em seções semânticas identificadas por título e tópicos associados a essa seção.
+Os trechos (`chunks`) do texto original poderão ser criados utilizando a biblioteca [semantic-chunking](https://github.com/jparkerweb/semantic-chunking), que irá segmentar o texto original em pedaços com uma quantidade máxima de tokens especificada via parâmetro.
 
-Na branch [other-semantic-chunking](https://github.com/igorMSoares/semantic-search-example/tree/feat/other-semantic-chunking) foi utilizada outra forma de gerar os segmentos, mantendo as mesmas frases do trecho original, sem interpretá-las, resumí-las ou alterá-las de nenhuma forma.
+Os _chunks_ gerados irão manter as mesmas frases do texto original, sem interpretá-las, resumí-las ou alterá-las de nenhuma forma. E é garantido que os trechos sempre irão incluir frases completas, agrupadas semanticamente utilizando similaridade de cosenos.
+
+Na branch [main](https://github.com/igorMSoares/semantic-search-example/) os segmentos foram criados utilizando o Chat-GPT para fazer o _Semantic Chunking_ de forma a obter uma versão em markdown com o texto original resumido em seções semânticas identificadas por título e tópicos associados a essa seção.
 
 ## Setup
 
@@ -56,41 +58,30 @@ Para fazer o build do projecto execute o comando:
 npm run build
 ```
 
-## Estruturando os segmentos
+## Gerando os segmentos
 
-A partir do markdown gerado pelo Chat-GPT, foi gerado um arquivo CSV ([semantic-chunks.csv](./semantic-chunks.csv)) no formato esperado pelo comando que irá criar os embeddings e carregá-los no Pinecone.
-
-Para converter um markdown em um csv no formato esperado, utilize o comando:
+Para gerar os segmentos a partir de um texto base (`roteiro-akita-rinha-backend.txt`) execute o comando:
 
 ```sh
-npm start -- convertMd --mdFile=<caminho-do-arquivo.md>
+npm start -- chunk --filePath=<caminho-do-texto-base> --maxTokenSize=<quantidade-maxima-de-tokens-por-chunk>
 ```
 
-O markdown deverá estar no seguinte formato:
+_Este comando é CPU-intensive e poderá demorar alguns segundos para terminar pois irá processar todo o texto base, executando similaridade de cosenos entre as frases para segmentá-lo._
 
-```txt
-### Título desta seção
+Caso o argumento `--maxTokenSize` seja omitido, serão gerados chunks contendo, no máximo, 50 tokens.
 
-- Primeiro ítem do conteúdo da seção
-- Segundo ítem do conteúdo da seção
-
-### Título de outra seção
-
-- Primeiro ítem do conteúdo da outra seção
-- Segundo ítem do conteúdo da outra seção
-```
+Os segmentos gerados serão salvos no arquivo `semantic-chunks.csv`. Utilize o argumento `--verbose` para exibir o logging da função de segmentação na saída padrão.
 
 ### Estrutura do CSV gerado
 
-Possui uma única coluna (`CHUNK`) formatada como `Title:"título da seção",Content:"item-1",...,"intem-N"|` e o caracter `|` é o delimitador de coluna.
+Possui uma única coluna (`CHUNK`) e o caracter `|` é o delimitador de coluna.
 
 Primeiras linhas do [semantic-chunks.csv](./semantic-chunks.csv):
 
 ```csv
 CHUNK
-Title:"Entendendo o HTTP e a Importância da Troca de Mensagens",Content:"Introdução ao HTTP","Relevância da troca de mensagens em formato texto","Ferramentas como Curl e Wget para navegação de linha de comando"|
-Title:"Importância do Conhecimento Básico de HTTP",Content:"Necessidade de entender como enviar e receber mensagens HTTP","Essencial para compreensão da web e desenvolvimento web","Implicações para entender APIs e problemas de segurança"|
-Title:"Introdução ao Gatling",Content:"Descrição do Gatling como ferramenta de teste de carga","Patrocínio da ferramenta pela rinha","Linguagens suportadas para scripts: Scala ou Kotlin"|
+Não podia terminar o ano com pendências, então eis a parte final da Saga da Rinha de Backend.|
+Neste video vou aproveitar os temas da rinha pra demonstrar em mais detalhes como configurar um Docker Compose de verdade, como funciona testes de carga com Gatling, como usar esses dados pra configurar coisas como o Postgres melhor.|
 ```
 
 ## Carregando os dados
@@ -123,7 +114,7 @@ Com o índice populado com as _embeddings_ geradas a partir dos _chunks_ podemos
 npm start -- query --query="Qual o impacto da configuração da rede do docker na performance da API?" --topK=10
 ```
 
-O parâmetro `--topK=n` especifica que serão retornados os `n` resultados mais similares à query. 
+O parâmetro `--topK=n` especifica que serão retornados os `n` resultados mais similares à query.
 
 O resultado da pesquisa será salvo em `out.json`, contendo o _chunk_ e o seu respectivo _score_ que indica o grau de similaridade com a query.
 
