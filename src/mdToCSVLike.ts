@@ -5,7 +5,7 @@ export const mdToCSVLike = async (mdFile: string) => {
   const markdown = await fs.readFile(mdAbsolutePath, "utf8");
 
   const csv = markdown
-    .replace(/### (.+)\n\n/g, '|Title:"$1",Content:')
+    .replace(/### (.+)\n\n*/g, '|Title:"$1",Content:')
     .replace(/- (.+)\n/g, '"$1",')
     .replace(/,\n\|/g, "|\n")
     .replace(/^\|/, "CHUNK\n");
